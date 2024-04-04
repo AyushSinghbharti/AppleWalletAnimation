@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 const cards = [
   require("../../assets/cards/Card 1.png"),
@@ -14,21 +15,34 @@ const cards = [
 ];
 
 const CardsList = () => {
+  const pan = Gesture.Pan()
+    .onStart(() => {
+      console.log("pannig started");
+    })
+    .onChange((event) => {
+      console.log("panning on Y:", event.changeX, event.changeY);
+    })
+    .onEnd(() => {
+      console.log("panning ended");
+    });
+
   return (
-    <View style={{padding: 10}}>
-      {cards.map((card, index) => (
-        <Image
-          key={index}
-          source={card}
-          style={{
-            width: "100%",
-            height: undefined,
-            aspectRatio: 7 / 4,
-            marginVertical: 5,
-          }}
-        />
-      ))}
-    </View>
+    <GestureDetector gesture={pan}>
+      <View style={{ padding: 10 }}>
+        {cards.map((card, index) => (
+          <Image
+            key={index}
+            source={card}
+            style={{
+              width: "100%",
+              height: undefined,
+              aspectRatio: 7 / 4,
+              marginVertical: 5,
+            }}
+          />
+        ))}
+      </View>
+    </GestureDetector>
   );
 };
 
